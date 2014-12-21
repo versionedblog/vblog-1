@@ -23,37 +23,11 @@
   <link rel="stylesheet" href="http://markdown-here.com/css/syntaxhighlighting.css">
   <link rel="stylesheet" href="http://markdown-here.com/css/main.css">
 
-  <script src="./m1_files/ga.js"></script>
-  <script src="./m1_files/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+  <script src="./lib/ga.js"></script>
+  <script src="./lib/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 
 </head>
 <body>
-  <!--[if lt IE 7]>
-    <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-  <![endif]-->
-
-
-  <div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
-      <a class="brand" href="http://markdown-here.com/index.html"><img src="./m1_files/icon24.png">&nbsp;Markdown Here</a>
-      <div class="nav-collapse collapse">
-        <ul class="nav">
-          <li><a href="http://markdown-here.com/index.html">Home</a></li>
-          <li><a href="http://markdown-here.com/get.html">Get it!</a></li>
-          <li><a href="http://markdown-here.com/features.html">Features</a></li>
-          <li><a href="http://markdown-here.com/about.html">About</a></li>
-        </ul>
-      </div><!--/.nav-collapse -->
-    </div>
-  </div>
-</div>
-
 
   <div class="container-fluid">
     <style>
@@ -116,42 +90,36 @@ To see what else you can do with Markdown (including **tables**, **images**, **n
   <footer class="text-right">
   </footer>
 
-  <script src="./m1_files/jquery.min.js"></script>
+  <script src="./lib/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-  <script src="./m1_files/underscore-min.js"></script>
+  <script src="./lib/underscore-min.js"></script>
 
-  <script src="./m1_files/bootstrap.min.js"></script>
+  <script src="./lib/bootstrap.min.js"></script>
 
-  <script src="./m1_files/plugins.js"></script>
-  <script src="./m1_files/marked.js"></script>
-  <script src="./m1_files/highlight.js"></script>
-  <script src="./m1_files/main.js"></script>
+  <script src="./lib/plugins.js"></script>
+  <script src="./lib/marked.js"></script>
+  <script src="./lib/highlight.js"></script>
+  <script src="./lib/main.js"></script>
 
   <script>
-    var _gaq=[['_setAccount','UA-34697662-2'],['_trackPageview']];
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-     g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
-     s.parentNode.insertBefore(g,s)}(document,'script'));
 
-   
-     document.querySelector('textarea').addEventListener('keydown', function (e) {
+    document.querySelector('textarea').addEventListener('keydown', function (e) {
         if (e.which == 9) {
             e.preventDefault();
         }
      });
      
-$(document).ready(function(){
-  $("button").click(function(){
-  alert('test sdasdadldad');
-    $.post("hello",
-    {    
-      blogData:"Donald Duck"
-    },
-    function(data,status){
-      alert("Data: " + data + "\nStatus: " + status);
+    $(document).ready(function(){
+      $("button").click(function(){
+        $.post("hello",
+        {
+          blogData:"Donald Duck"
+        },
+        function(data,status){
+          alert("Data: " + data + "\nStatus: " + status);
+        });
+      });
     });
-  });
-});
   </script>
 
 

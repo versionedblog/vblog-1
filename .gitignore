@@ -3,7 +3,9 @@
 #################
 target/
 .idea/**
-
+*.iml
+*.hidejava
+Vblog.properties
 
 #################
 ## Eclipse
