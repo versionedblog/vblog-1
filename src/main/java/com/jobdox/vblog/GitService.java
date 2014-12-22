@@ -6,7 +6,7 @@ import org.eclipse.jgit.lib.Repository;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import com.jobdox.vblog.GitUtils.FileData;
+
 import org.eclipse.jgit.revplot.PlotCommit;
 import org.eclipse.jgit.revplot.PlotCommitList;
 import org.eclipse.jgit.revwalk.RevTree;
@@ -33,15 +33,15 @@ public class GitService {
         return objectIds;
     }
 
-    public static FileData getFileContent(Repository repository, String fileName, ObjectId fileVersionObjectId) {
+    public static FileData getFileContent(Repository repository, String fileName, ObjectId versionObjectId) {
 
         String content = null;
-        RevTree tree = GitUtils.getTree(repository, fileVersionObjectId);
+        RevTree tree = GitUtils.getTree(repository, versionObjectId);
         if(tree != null) {
             FileData fileData = new FileData();
             content = GitUtils.getFileContent(repository, tree);
-            fileData.setFileContent(content);
-            fileData.setFileVersionObjectId(fileVersionObjectId);
+            fileData.setContent(content);
+            fileData.setVersionObjectId(versionObjectId);
             return fileData;
         }
 

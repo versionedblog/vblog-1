@@ -51,27 +51,6 @@ public class GitUtils {
     private static Repository repository = initRepository();
 
 
-    public static class FileData {
-        private String fileContent;
-        private ObjectId fileVersionObjectId;
-
-        public String getFileContent() {
-            return fileContent;
-        }
-
-        public void setFileContent(String fileContent) {
-            this.fileContent = fileContent;
-        }
-
-        public ObjectId getFileVersionObjectId() {
-            return fileVersionObjectId;
-        }
-
-        public void setFileVersionObjectId(ObjectId fileVersionObjectId) {
-            this.fileVersionObjectId = fileVersionObjectId;
-        }
-    }
-
     private static Repository initRepository() {
         File gitDir = new File(vblogProperties.getProperty("RepositoryPath") + "/.git");
         Repository repository = null;
