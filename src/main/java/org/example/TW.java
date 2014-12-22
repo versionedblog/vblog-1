@@ -40,6 +40,8 @@ public class TW {
             PlotCommit obj = plotCommitIterator.next();
             ObjectId  objectId = obj.getId();
 
+
+
             //System.out.println("objectId=" + ((AnyObjectId)objectId));
             String comment = getCommitLogComment(repository, objectId);
             System.out.println(comment);
@@ -182,7 +184,13 @@ public class TW {
         System.out.println(str);
 
         ObjectId objectId = treeWalk.getObjectId(0);
-        System.out.println("res:" + objectId);
+        System.out.println("res:" + objectId.toString());
+        String name = objectId.name();
+        ObjectId xx = ObjectId.fromString(name);
+
+        boolean yy = xx.equals(objectId);
+        System.out.println("yy:" + yy);
+
     }
 
     private static void printDirectory(Repository repository, RevTree tree) throws MissingObjectException,
