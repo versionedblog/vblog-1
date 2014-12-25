@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2014. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.jobdox.vblog.dataobj.Message" table="message" catalog="vblog">
+        <id name="id" type="java.lang.Integer">
+            <column name="ID" />
+            <generator class="identity" />
+        </id>
+        <property name="userId" type="java.lang.Integer">
+            <column name="USER_ID" length="11" not-null="true" />
+        </property>
+        <property name="messageId" type="java.lang.Integer">
+            <column name="MESSAGE_ID" length="11" not-null="true" />
+        </property>
+        <property name="versionId" type="java.lang.Integer">
+            <column name="VERSION_ID" length="11" not-null="true" />
+        </property>
+        <property name="title" type="string">
+            <column name="TITLE" length="256" not-null="true" />
+        </property>
+        <property name="author" type="string">
+            <column name="AUTHOR" length="256" not-null="true" />
+        </property>
+        <property name="created" type="java.util.Date">
+            <column name="CREATED" length="4" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
