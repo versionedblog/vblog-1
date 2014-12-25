@@ -1,0 +1,11 @@
+sudo apt-get install mysql-server
+sudo netstat -tap | grep mysql
+sudo service mysql restart
+
+To Change Root Password:
+sudo dpkg-reconfigure mysql-server-5.5
+
+To take a dump:
+$mysqldump -u root -proot vblog
+
+
