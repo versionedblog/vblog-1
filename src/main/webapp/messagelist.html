@@ -1,0 +1,74 @@
+<!--
+  ~ Copyright (c) 2014. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.get("/rest/json/messagelist/all/user/1",function(data,status){
+                //alert("Data: " + data.messages[0].title + "\nStatus: " + status);
+                /**
+                var data = {};
+                data.d = [{FirstName: 'Beaner', Age: '20'},
+                          {FirstName: 'Cheese', Age: '98'},
+                          {FirstName: 'Martin', Age: '45'}];
+                **/
+                $('#thetable tr').not(':first').not(':last').remove();
+                var html = '';
+                for(var i = 0; i < data.messages.length; i++)
+                    html += '<tr><td>' +
+                            data.messages[i].title +
+                            '</td><td>' +
+                            '<a href="message.html?id=' +
+                            data.messages[i].id +
+                            '">The message</a> &nbsp;&nbsp;' +
+                            data.messages[i].author +
+                            '</td></tr>';
+                $('#thetable tr').first().after(html);
+            });
+
+});
+
+
+
+    </script>
+</head>
+<body>
+
+<table id="thetable">
+    <tr>
+        <th>Title</th>
+        <th>Date</th>
+    </tr>
+    <tr>
+        <td>title will be here</td>
+        <td>date will be here</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+</table>
+</body>
+</html>
+
+
+<html>
+
+<head>
+
+
+</head>
+
+<body>
+
+</body>
+</html>
+

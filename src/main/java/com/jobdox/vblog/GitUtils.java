@@ -36,7 +36,7 @@ public class GitUtils {
     private static Properties getVblogProperties() {
         Properties prop = new Properties();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        InputStream stream = loader.getResourceAsStream("/Vblog.properties");
+        InputStream stream = loader.getResourceAsStream("Vblog.properties");
         try {
             prop.load(stream);
         } catch (IOException e) {
@@ -119,7 +119,7 @@ public class GitUtils {
     }
 
 
-    public static String getFileContent(Repository repository, RevTree tree) {
+    public static String getFileContent(Repository repository, RevTree tree, String fileName) {
         // now try to find a specific file
         TreeWalk treeWalk = new TreeWalk(repository);
         try {
@@ -129,7 +129,7 @@ public class GitUtils {
             return null;
         }
         treeWalk.setRecursive(false);
-        treeWalk.setFilter(PathFilter.create("test1.txt"));
+        treeWalk.setFilter(PathFilter.create(fileName));
         try {
             if (!treeWalk.next()) {
                 throw new IllegalStateException("Did not find expected file");
@@ -158,7 +158,7 @@ public class GitUtils {
 
     public static boolean updateFile(String fileName, String fileContent, String comment) {
 
-        File file = new File(vblogProperties.getProperty("RepositoryPath") + fileName);
+        File file = new File(vblogProperties.getProperty("RepositoryPath") + "/" + fileName);
         String userName = vblogProperties.getProperty("RepositoryUserName");
         String password = vblogProperties.getProperty("RepositoryPassword");
 

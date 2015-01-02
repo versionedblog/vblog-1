@@ -13,6 +13,7 @@ package com.jobdox.vblog.rest;
  */
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Every time a new version of a message is saved to the git repository a corresponding entry is made to database
@@ -24,6 +25,8 @@ public class VMessage {
     private String title;
     private String author;
     private Date created;
+    private String content;
+    private String uuid= UUID.randomUUID().toString();
 
     public VMessage() {
     }
@@ -85,32 +88,12 @@ public class VMessage {
         this.created = created;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof VMessage)) return false;
-
-        VMessage vMessage = (VMessage) o;
-
-        if (!author.equals(vMessage.author)) return false;
-        if (!created.equals(vMessage.created)) return false;
-        if (!messageId.equals(vMessage.messageId)) return false;
-        if (!objectIdStr.equals(vMessage.objectIdStr)) return false;
-        if (!title.equals(vMessage.title)) return false;
-        if (!versionNumber.equals(vMessage.versionNumber)) return false;
-
-        return true;
+    public String getContent() {
+        return content;
     }
 
-    @Override
-    public int hashCode() {
-        int result = objectIdStr.hashCode();
-        result = 31 * result + versionNumber.hashCode();
-        result = 31 * result + messageId.hashCode();
-        result = 31 * result + title.hashCode();
-        result = 31 * result + author.hashCode();
-        result = 31 * result + created.hashCode();
-        return result;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override
@@ -122,6 +105,7 @@ public class VMessage {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", created=" + created +
+                ", content='" + content + '\'' +
                 '}';
     }
 }

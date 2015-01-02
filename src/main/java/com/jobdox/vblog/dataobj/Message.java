@@ -17,11 +17,14 @@ public class Message {
     private String title;
     private String author;
     private Date created;
+    private String objectId;
+    private String uuid;
 
     public Message() {
     }
 
-    public Message(Integer id, Integer userId, Integer messageId, Integer versionId, String title, String author, Date created) {
+    public Message(Integer id, Integer userId, Integer messageId, Integer versionId, String title,
+                   String author, Date created, String objectId, String uuid) {
         this.id = id;
         this.userId = userId;
         this.messageId = messageId;
@@ -29,6 +32,8 @@ public class Message {
         this.title = title;
         this.author = author;
         this.created = created;
+        this.objectId = objectId;
+        this.uuid = uuid;
     }
 
     public Integer getId() {
@@ -87,6 +92,21 @@ public class Message {
         this.created = created;
     }
 
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     @Override
     public String toString() {
@@ -98,6 +118,8 @@ public class Message {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", created=" + created +
+                ", objectId=" + objectId +
+                ", uuid=" + uuid +
                 '}';
     }
 }

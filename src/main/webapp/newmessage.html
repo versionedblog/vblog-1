@@ -1,0 +1,161 @@
+<!--
+  ~ Copyright (c) 2014. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="lib/markdown.js"></script>
+    <script>
+      function Editor(input, preview) {
+        this.update = function () {
+          preview.innerHTML = markdown.toHTML(input.value);
+        };
+        input.editor = this;
+        this.update();
+      }
+      var $ = function (id) { return document.getElementById(id); };
+      new Editor($("text-input"), $("preview"));
+    </script>
+    <script>
+        $.extend({
+          getUrlVars: function(){
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for(var i = 0; i < hashes.length; i++)
+            {
+              hash = hashes[i].split('=');
+              vars.push(hash[0]);
+              vars[hash[0]] = hash[1];
+            }
+            return vars;
+          },
+          getUrlVar: function(name){
+            return $.getUrlVars()[name];
+          }
+        });
+
+
+        $(document).ready(function(){
+            //Second call with this:
+            // Get object of URL parameters
+            var allVars = $.getUrlVars();
+
+            // Getting URL var by its nam
+            var messageId = $.getUrlVar('id');
+            //var docId = $.url;
+            //alert("DocId=" + docId);
+            $.get("/rest/json/messagelist/all/user/1/message",function(data,status){
+                //alert("Data: " + data.uuid + "\nStatus: " + status);
+                $('#uuid').val(data.uuid);
+            });
+
+
+        $( "#addMessageForm" ).submit(function( event ) {
+
+          // alert('TEST IT COMES HERE');
+          // Stop form from submitting normally
+          event.preventDefault();
+
+          // Get some values from elements on the page:
+          var $form = $( this ),
+            vmessageId = $form.find( "input[name='messageId']" ).val(),
+            vlastVersionId = $form.find( "input[name='lastVersionId']" ).val(),
+            vuserId = $form.find( "input[name='userId']" ).val(),
+            vauthor = $form.find( "input[name='author']" ).val(),
+            vtitle = $form.find( "input[name='title']" ).val(),
+            vcontent = $form.find( "textarea[name='content']" ).val(),
+            vuuid = $form.find( "input[name='uuid']" ).val(),
+            vurl = $form.attr( "action" );
+
+            var requestData = { "uuid" : vuuid,  "messageId": vmessageId, "lastVersionId" : vlastVersionId, "userId" : vuserId, "author" : vauthor, "title" : vtitle, "content" : vcontent};
+            /*
+          // Send the data using post
+          var posting = $.post( vurl,
+          ,
+            function(data) {
+                alert('post complete')
+            },
+            'json'
+          );
+                    // Put the results in a div
+          posting.done(function( data ) {
+            //var content = $( data ).find( "#content" );
+            //$( "#result" ).empty().append( content );
+            alert('messageId=' + data.messageId);
+          });
+
+
+        */
+          $.ajax ({
+    "url": vurl,
+    "type": "POST",
+    "data": JSON.stringify(requestData),
+    "dataType": "json",
+    "contentType": "application/json; charset=utf-8",
+    "success": function(data){
+       //alert('post complete' + data);
+        $('#messageId').val(data.messageId);
+        $('#versionId').val(data.versionId);
+    }
+
+    });
+});
+
+
+
+});
+
+
+
+
+    </script>
+</head>
+<body>
+
+
+
+<form method="post" action="/rest/json/messagelist/all/message/add" id="addMessageForm">
+    <input id="uuid" type="hidden" name="uuid">
+    <input id="messageId" type="hidden" name="messageId" value="">
+    <input id="versionId" type="hidden" name="lastVersionId" value="">
+    <input type="hidden" name="userId" value="1">
+    Author:<br>
+    <input type="text" name="author">
+    <br>
+    Title:<br>
+    <input type="text" name="title">
+    <br>
+    Content:<br>
+    <textarea id="text-input" rows="10" cols="60" name="content">
+    </textarea>
+    <br>
+    Preview:<br>
+    <div id="preview"> </div>
+    <br><br>
+    <input type="submit" value="Submit">
+</form>
+
+
+
+</body>
+</html>
+
+
+<html>
+
+<head>
+
+
+</head>
+
+<body>
+
+</body>
+</html>
+

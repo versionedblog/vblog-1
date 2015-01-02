@@ -10,10 +10,7 @@ package com.jobdox.vblog.rest;
 
 import com.jobdox.vblog.db.MessageAPI;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,9 +25,10 @@ public class MessageListService {
     @GET
     @Path("/all/user/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public VMessageList getTrackInJSON(@PathParam("userId") String userId) {
+    public VMessageList getMesageListInJSON(@PathParam("userId") Integer userId) {
 
-        VMessageList vMessageList = new VMessageList();
+
+        /*
         VMessage message11 = new VMessage( "0101010", 1, 1, "title-1-1", "authorX", new Date());
         VMessage message12 = new VMessage( "0101010", 1, 1, "title-1-1", "authorX", new Date());
         VMessage message21 = new VMessage( "0101010", 1, 1, "title-1-1", "authorX", new Date());
@@ -40,26 +38,105 @@ public class MessageListService {
         messageList.add(message12);
         messageList.add(message21);
         messageList.add(message22);
-
-        vMessageList.setUserId(userId);
+        */
+        VMessageList vMessageList = new VMessageList();
+        vMessageList.setUserId(userId.toString());
         vMessageList.setUserName("umesh");
-        vMessageList.setMessages(MessageAPI.getLatestUserMessages(1));
+        vMessageList.setMessages(MessageAPI.getLatestUserMessages(userId));
 
 
         return vMessageList;
 
     }
 
-    /*
-    @POST
-    @Path("/post")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTrackInJSON(Track track) {
+    @GET
+    @Path("/all/user/{userId}/message/{messageId}/hide")
+    @Produces(MediaType.APPLICATION_JSON)
+    public VMessageEnvelope getMessageInJSONHide(@PathParam("userId") Integer userId, @PathParam("messageId") Integer messageId) {
 
-        String result = "Track saved : " + track;
-        return Response.status(201).entity(result).build();
+
+        VMessage message = new VMessage( "0101010", 1, 1, "title-1-1", "authorX", new Date());
+        message.setContent("This is the mesage content");
+
+
+        VMessageEnvelope messageEnvelope = new VMessageEnvelope();
+        messageEnvelope.setVmessage(message);
+        messageEnvelope.setUserId(userId);
+        messageEnvelope.setMessageId(messageId);
+        messageEnvelope.setNextMessageId(messageId+1);
+        messageEnvelope.setPreviousMessageId(messageId-1);
+
+        return messageEnvelope;
 
     }
-        */
+
+
+    @GET
+    @Path("/all/user/{userId}/message/{messageId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public VMessageEnvelope getMessageInJSON(@PathParam("userId") Integer userId, @PathParam("messageId") Integer messageId) {
+
+        VMessage message = new VMessage( "0101010", 1, 1, "title-1-1", "authorX", new Date());
+        message.setContent("This is the mesage content for messageId" + messageId);
+        VMessageEnvelope messageEnvelope = new VMessageEnvelope();
+        messageEnvelope.setVmessage(message);
+        messageEnvelope.setUserId(userId);
+        messageEnvelope.setMessageId(messageId);
+        messageEnvelope.setNextMessageId(messageId+1);
+        messageEnvelope.setPreviousMessageId(messageId-1);
+
+        return messageEnvelope;
+
+    }
+
+    @GET
+    @Path("/all/user/{userId}/message")
+    @Produces(MediaType.APPLICATION_JSON)
+    public VNewMessage getNewMessageInJSON(@PathParam("userId") Integer userId) {
+
+        VNewMessage newMessage = new VNewMessage("");
+        return newMessage;
+
+    }
+
+
+    @POST
+    @Path("/all/message/add")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public VNewMessageResponse saveMessage(VSaveMessage saveMessage) {
+
+        if(saveMessage.getMessageId() == null) {
+            return MessageAPI.saveNewMessage(saveMessage.getUserId(),
+                    saveMessage.getTitle(),
+                    saveMessage.getAuthor(),
+                    saveMessage.getContent(),
+                    saveMessage.getUuid());
+        } else {
+            return MessageAPI.saveNewMessageVersion(saveMessage.getUserId(), saveMessage.getMessageId(), saveMessage.getLastVersionId(),
+                    saveMessage.getTitle(),
+                    saveMessage.getAuthor(),
+                    saveMessage.getContent(),
+                    saveMessage.getUuid());
+        }
+
+    }
+
+    @POST
+    @Path("/all/message/test")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public VNewMessageResponse saveMessage1(
+                                String password) {
+
+        VNewMessageResponse newMessageResponse = new VNewMessageResponse();
+        newMessageResponse.setMessageId(10);
+        newMessageResponse.setVersionId(1);
+        newMessageResponse.setStatus(true);
+        newMessageResponse.setReason("eeee");
+        return newMessageResponse;
+
+    }
+
 
 }

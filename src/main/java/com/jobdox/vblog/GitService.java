@@ -33,13 +33,13 @@ public class GitService {
         return objectIds;
     }
 
-    public static FileData getFileContent(Repository repository, String fileName, ObjectId versionObjectId) {
-
+    public static FileData getFileContent(String fileName, ObjectId versionObjectId) {
+        Repository repository = GitUtils.getRepository();
         String content = null;
         RevTree tree = GitUtils.getTree(repository, versionObjectId);
         if(tree != null) {
             FileData fileData = new FileData();
-            content = GitUtils.getFileContent(repository, tree);
+            content = GitUtils.getFileContent(repository, tree, fileName);
             fileData.setContent(content);
             fileData.setVersionObjectId(versionObjectId);
             return fileData;

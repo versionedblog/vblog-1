@@ -34,5 +34,8 @@
         <property name="created" type="java.util.Date">
             <column name="CREATED" length="4" not-null="true" />
         </property>
+        <property name="objectId" type="string">
+            <column name="OBJECT_ID" length="128" not-null="true" />
+        </property>
     </class>
 </hibernate-mapping>
