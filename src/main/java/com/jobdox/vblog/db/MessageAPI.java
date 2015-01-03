@@ -463,6 +463,51 @@ public class MessageAPI {
         return null;
     }
 
+    public static Message getMessage(Integer userId, Integer messageId, Integer versionId) {
+
+        Session session = null;
+        Message result = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            session.beginTransaction();
+            String sql = null;
+            sql =
+                    "select m1.id as id, m1.user_id as user_id , m1.message_id as message_id , m1.version_id as version_id, m1.title as title , m1.author as author , m1.created as created, " +
+                            " m1.object_id  from " +
+                            " message m1 " +
+                            " where " +
+                            " m1.user_id = %d " +
+                            " and " +
+                            " m1.message_id = %d " +
+                            " and " +
+                            " m1.version_id = %d ";
+
+            sql = String.format(sql, userId, messageId, versionId);
+
+            System.out.println(sql);
+            SQLQuery query = session.createSQLQuery(sql).addEntity(Message.class);
+
+            List<Message> messages = (List<Message>)query.list();
+            if(messages.size() > 0) {
+                result = messages.get(0);
+            }
+            session.getTransaction().commit();
+            return result;
+
+        } catch(Throwable t) {
+            t.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return null;
+
+
+    }
+
+    
+
 
                 /*
             String hql = "select M.id, M.userId, M.messageId, max(M.versionId) FROM Message M WHERE M.userId = %d group by M.messageId";
@@ -473,7 +518,8 @@ public class MessageAPI {
                 "ON m1.userId = m2.userId AND m1.messageId = m2.messageId AND m1.versionId = m2.maxversionId";
 
             //hql = "FROM Message m1";
-
+public static void getMessage(Integer , Integer , Integer ) {
+    }
             //hql = String.format(hql, userId);
             Query query = session.createQuery(hql);
             */

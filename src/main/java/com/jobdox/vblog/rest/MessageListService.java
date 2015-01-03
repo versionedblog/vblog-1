@@ -114,6 +114,74 @@ public class MessageListService {
 
     }
 
+    @GET
+    @Path("/all/user/{userId}/message/{messageId}/version/{versionId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public VMessageDiffResponse getMessageDiffInJSON(@PathParam("userId") Integer userId, @PathParam("messageId") Integer messageId, @PathParam("versionId") Integer versionId) {
+        return getMessageDiff(userId, messageId, versionId);
+    }
+
+    private VMessageDiffResponse getMessageDiff(Integer userId, Integer messageId, Integer versionId)
+    {
+        VMessageDiffResponse vmessageDiffResponse= new VMessageDiffResponse();
+        vmessageDiffResponse.setSuccess(true);
+        vmessageDiffResponse.setUserId(userId);
+        vmessageDiffResponse.setMessageId(messageId);
+        vmessageDiffResponse.setVersionNumber(versionId);
+        Message latestMessage = MessageAPI.getLatestUserMessage(userId, messageId);
+        if(latestMessage == null) {
+            vmessageDiffResponse.setSuccess(false);
+            vmessageDiffResponse.setReason(String.format("The messageId %d specified is not valid for userId %d", messageId, userId));
+            return vmessageDiffResponse;
+        }
+        Integer maxVersionNumber = latestMessage.getVersionId();
+        vmessageDiffResponse.setMaxVersionNumber(maxVersionNumber);
+        if(versionId > maxVersionNumber) {
+            vmessageDiffResponse.setSuccess(false);
+            vmessageDiffResponse.setReason("The version number requested is greater than any available for message");
+            return vmessageDiffResponse;
+        }
+
+        if(versionId == 0 || versionId < -1) {
+            vmessageDiffResponse.setSuccess(false);
+            vmessageDiffResponse.setReason(String.format("The version %d number requested is not valid for userId %d and messageId %d", versionId, userId, messageId) );
+            return vmessageDiffResponse;
+        }
+
+        if(versionId == -1) {
+            versionId = maxVersionNumber;
+            vmessageDiffResponse.setVersionNumber(versionId);
+        }
+        Message newMessage = MessageAPI.getMessage(userId, messageId, versionId);
+        FileData newMessageFileData = GitService.getFileContent(messageId.toString(), ObjectId.fromString(newMessage.getObjectId()));
+        String newMessageContent = newMessageFileData.getContent();
+        vmessageDiffResponse.setNewMessage(newMessageContent);
+        String oldMessageContent = "";
+        if(versionId == 1) {
+            vmessageDiffResponse.setOldMessage(oldMessageContent);
+        } else {
+            Message oldMessage = MessageAPI.getMessage(userId, messageId, versionId-1);
+            FileData oldMessageFileData = GitService.getFileContent(messageId.toString(), ObjectId.fromString(oldMessage.getObjectId()));
+            oldMessageContent = oldMessageFileData.getContent();
+            vmessageDiffResponse.setOldMessage(oldMessageContent);
+        }
+
+        return vmessageDiffResponse;
+    }
+
+    @POST
+    @Path("/all/message/diff")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public VMessageDiffResponse getMessageDiffInJSONUsingPost(VMessageDiffRequest vmessageDiffRequest) {
+
+        Integer userId = vmessageDiffRequest.getUserId();
+        Integer messageId = vmessageDiffRequest.getMessageId();
+        Integer versionId = vmessageDiffRequest.getVersionId();
+
+        return getMessageDiff(userId, messageId, versionId);
+    }
+
     /**
      * Initialize a message with a UUID
      * @param userId
