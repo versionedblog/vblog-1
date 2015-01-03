@@ -37,13 +37,30 @@
             //var allVars = $.getUrlVars();
 
             // Getting URL var by its nam
-            var messageId = $.getUrlVar('id');
+            var id = $.getUrlVar('id');
             //var docId = $.url;
             //alert("DocId=" + docId);
-            $.get("/rest/json/messagelist/all/user/1/message",function(data,status){
-                //alert("Data: " + data.uuid + "\nStatus: " + status);
-                $('#uuid').val(data.uuid);
-            });
+            var url = null;
+            if(id == null) {
+                url = "/rest/json/messagelist/all/user/1/message";
+                $.get(url,function(data,status){
+                    //alert("Data: " + data.uuid + "\nStatus: " + status);
+                    $('#uuid').val(data.uuid);
+                });
+            } else {
+                url = "/rest/json/messagelist/all/user/1/message/" + id + "/latest";
+                $.get(url,function(data,status){
+                    //alert("Data: " + data.uuid + "\nStatus: " + status);
+                    $('#uuid').val(data.uuidOverride);
+                    $('#messageId').val(data.messageId);
+                    $('#versionId').val(data.vmessage.versionNumber);
+                    $('#author').val(data.vmessage.author);
+                    $('#title').val(data.vmessage.title);
+                    $('#text-input').val(data.vmessage.content);
+                     $("#preview").html(marked("#" + data.vmessage.title + "\n" + "## *By:*" + data.vmessage.author + "\n" + data.vmessage.content));
+                });
+            }
+
 
             //preview.innerHTML = markdown.toHTML(input.value);
             $( "#text-input" ).keyup(function() {

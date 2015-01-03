@@ -19,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by umesh on 12/24/14.
@@ -48,6 +49,24 @@ public class MessageListService {
     }
 
 
+    /**
+     * Get the latest version of the specified message for a specified user
+     *
+     * @param userId
+     * @return
+     */
+    @GET
+    @Path("/all/user/{userId}/message/{messageId}/latest")
+    @Produces(MediaType.APPLICATION_JSON)
+    public VMessageEnvelope getLatestMessageInJSON(@PathParam("userId") Integer userId, @PathParam("messageId") Integer id) {
+        Message message = MessageAPI.getMessageById(id);
+        Message messageLatest = MessageAPI.getLatestUserMessage(userId, message.getMessageId());
+        System.out.println("Incoming id=" + id + ", Outgoing Id=" + messageLatest.getId());
+        VMessageEnvelope messageEnvelope =  getMessageInJSON(userId, messageLatest.getId());
+        messageEnvelope.setUuidOverride(UUID.randomUUID().toString());
+        return messageEnvelope;
+    }
+
 
     /**
      * Get the latest version of the specified message for a specified user
@@ -61,7 +80,6 @@ public class MessageListService {
     public VMessageEnvelope getMessageInJSON(@PathParam("userId") Integer userId, @PathParam("messageId") Integer id) {
 
         VMessage message = new VMessage( );
-        //message.setContent("This is the mesage content for messageId" + messageId);
 
         Message message1 = MessageAPI.getMessageById(id);
         Integer versionId = message1.getVersionId();
@@ -141,46 +159,5 @@ public class MessageListService {
 
     }
 
-    /** Hide these for now
-
-    @POST
-    @Path("/all/message/test")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public VNewMessageResponse saveMessage1(
-                                String password) {
-
-        VNewMessageResponse newMessageResponse = new VNewMessageResponse();
-        newMessageResponse.setMessageId(10);
-        newMessageResponse.setVersionId(1);
-        newMessageResponse.setStatus(true);
-        newMessageResponse.setReason("eeee");
-        return newMessageResponse;
-
-    }
-
-
-    @GET
-    @Path("/all/user/{userId}/message/{messageId}/hide")
-    @Produces(MediaType.APPLICATION_JSON)
-    public VMessageEnvelope getMessageInJSONHide(@PathParam("userId") Integer userId, @PathParam("messageId") Integer messageId) {
-
-
-        VMessage message = new VMessage( "0101010", 1, 1, "title-1-1", "authorX", new Date());
-        message.setContent("This is the mesage content");
-
-
-        VMessageEnvelope messageEnvelope = new VMessageEnvelope();
-        messageEnvelope.setVmessage(message);
-        messageEnvelope.setUserId(userId);
-        messageEnvelope.setMessageId(messageId);
-        messageEnvelope.setNextMessageId(messageId+1);
-        messageEnvelope.setPreviousMessageId(messageId-1);
-
-        return messageEnvelope;
-
-    }
-
-    **/
 
 }
