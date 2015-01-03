@@ -13,24 +13,24 @@
     <script>
         $(document).ready(function(){
             $.get("/rest/json/messagelist/all/user/1",function(data,status){
-                //alert("Data: " + data.messages[0].title + "\nStatus: " + status);
-                /**
-                var data = {};
-                data.d = [{FirstName: 'Beaner', Age: '20'},
-                          {FirstName: 'Cheese', Age: '98'},
-                          {FirstName: 'Martin', Age: '45'}];
-                **/
                 $('#thetable tr').not(':first').not(':last').remove();
                 var html = '';
-                for(var i = 0; i < data.messages.length; i++)
-                    html += '<tr><td>' +
-                            data.messages[i].title +
-                            '</td><td>' +
-                            '<a href="message.html?id=' +
-                            data.messages[i].id +
-                            '">The message</a> &nbsp;&nbsp;' +
-                            data.messages[i].author +
-                            '</td></tr>';
+                if(data.messages) {
+                    for(var i = 0; i < data.messages.length; i++)
+                        html += '<tr>' +
+                                '<td>' +
+                                '<a href="message.html?id=' +
+                                data.messages[i].id +
+                                '">' + data.messages[i].title + '</a>' +
+                                '</td>' +
+                                '<td>' +
+                                data.messages[i].author +
+                                '</td>' +
+                                '<td>' +
+                                data.messages[i].created +
+                                '</td>' +
+                                '</tr>';
+                }
                 $('#thetable tr').first().after(html);
             });
 
@@ -45,13 +45,16 @@
 <table id="thetable">
     <tr>
         <th>Title</th>
+        <th>Author</th>
         <th>Date</th>
     </tr>
     <tr>
         <td>title will be here</td>
+        <td>author will be here</td>
         <td>date will be here</td>
     </tr>
     <tr>
+        <td></td>
         <td></td>
         <td></td>
     </tr>

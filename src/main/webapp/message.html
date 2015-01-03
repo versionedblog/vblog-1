@@ -10,6 +10,7 @@
 <html>
 <head>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="lib/marked.js"></script>
     <script>
         $.extend({
           getUrlVars: function(){
@@ -37,16 +38,44 @@
             //var docId = $.url;
             //alert("DocId=" + docId);
             $.get("/rest/json/messagelist/all/user/1/message/" + messageId,function(data,status){
-                //alert("Data: " + data.vmessage.title + "\nStatus: " + status);
-                //$('#thetable tr').not(':first').not(':last').remove();
 
-                //$("img").attr("width","500");
-                var prevMessageLink = $("<a></a>").attr("href", "message.html?id="+data.previousMessageId).text("Prev Message");
-                var nextMessageLink = $("<a></a>").attr("href", "message.html?id="+data.nextMessageId).text("Next Message");
-                $('#prevMessageLink').html(prevMessageLink);
-                $('#nextMessageLink').html(nextMessageLink);
-                $('#title').html(data.vmessage.title);
-                $('#content').html(data.vmessage.content);
+                if(data.previousMessageId == null) {
+                    $('#prevMessageLink').hide();
+                } else {
+                    var prevMessageLink = $("<a></a>").attr("href", "message.html?id="+data.previousMessageId).text("Prev Message");
+                    $('#prevMessageLink').show();
+                    $('#prevMessageLink').html(prevMessageLink);
+                }
+                if(data.nextMessageId == null) {
+                    $('#nextMessageLink').hide();
+                } else {
+                    var nextMessageLink = $("<a></a>").attr("href", "message.html?id="+data.nextMessageId).text("Next Message");
+                    $('#nextMessageLink').show();
+                    $('#nextMessageLink').html(nextMessageLink);
+                }
+
+                if(data.previousVersionId == null) {
+                    $('#prevVersionLink').hide();
+                } else {
+                    var prevVersionLink = $("<a></a>").attr("href", "message.html?id="+data.previousVersionId).text("Prev Version");
+                    $('#prevVersionLink').show();
+                    $('#prevVersionLink').html(prevVersionLink);
+                }
+                if(data.nextVersionId == null) {
+                    $('#nextVersionLink').hide();
+                } else {
+                    var nextVersionLink = $("<a></a>").attr("href", "message.html?id="+data.nextVersionId).text("Next Version");
+                    $('#nextVersionLink').show();
+                    $('#nextVersionLink').html(nextVersionLink);
+                }
+
+                var title = $( "#title" ).val();
+                var author = $( "#author" ).val();
+                var content = $( "#text-input" ).val();
+                $("#content").html(marked("####" + data.vmessage.title + "\n" + "#### *By:*" + data.vmessage.author + ", " +" *At:*" + new Date(data.vmessage.created) + "\n" +  data.vmessage.content));
+
+                //$('#title').html(data.vmessage.title);
+                //$('#content').html(data.vmessage.content);
 
             });
 
@@ -61,34 +90,20 @@
 
 <table id="thetable">
     <tr>
-        <th id="prevMessageLink">PrevLink</th>
-        <th id="nextMessageLink">NextKink</th>
+        <td id="prevMessageLink">Prev Message Link</td>
+        <td id="nextMessageLink">Next Message Link</td>
     </tr>
     <tr>
-        <td id="title" colspan="2">title will be here</td>
-
+        <td id="prevVersionLink">Prev Version Link</td>
+        <td id="nextVersionLink">Next Version Link</td>
     </tr>
     <tr>
         <td id="content" colspan="2"> Content will be here</td>
     </tr>
 </table>
 
-<div id="xyxy">
-</div>
 
 </body>
 </html>
 
-
-<html>
-
-<head>
-
-
-</head>
-
-<body>
-
-</body>
-</html>
 

@@ -23,6 +23,8 @@ public class VMessageEnvelope {
     private Integer userId;
     private Integer previousMessageId;
     private Integer nextMessageId;
+    private Integer previousVersionId;
+    private Integer nextVersionId;
 
     public VMessageEnvelope() {
     }
@@ -75,6 +77,21 @@ public class VMessageEnvelope {
         this.nextMessageId = nextMessageId;
     }
 
+    public Integer getPreviousVersionId() {
+        return previousVersionId;
+    }
+
+    public void setPreviousVersionId(Integer previousVersionId) {
+        this.previousVersionId = previousVersionId;
+    }
+
+    public Integer getNextVersionId() {
+        return nextVersionId;
+    }
+
+    public void setNextVersionId(Integer nextVersionId) {
+        this.nextVersionId = nextVersionId;
+    }
 
     @Override
     public String toString() {
@@ -84,6 +101,8 @@ public class VMessageEnvelope {
                 ", userId=" + userId +
                 ", previousMessageId=" + previousMessageId +
                 ", nextMessageId=" + nextMessageId +
+                ", previousVersionId=" + previousVersionId +
+                ", nextVersionId=" + nextVersionId +
                 '}';
     }
 }

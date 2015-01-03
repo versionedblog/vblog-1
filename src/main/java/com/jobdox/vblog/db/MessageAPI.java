@@ -130,6 +130,139 @@ public class MessageAPI {
 
     }
 
+    /**
+     * select foo
+     from Foo foo, Bar bar
+     where foo.startDate = bar.date
+
+     */
+
+    /**
+     * Get the last version of all the messages for a specified user.
+     * @return
+     */
+    public static Integer getNextUserMessageId(Integer userId, Integer messageId) {
+        Session session = null;
+        Integer result = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            session.beginTransaction();
+            String sql = null;
+            sql =
+                    "select m1.id as id, m1.user_id as user_id , m1.message_id as message_id , m1.version_id as version_id, m1.title as title , m1.author as author , m1.created as created, m1.object_id  from " +
+                            "message m1 " +
+                            "where " +
+                            "m1.user_id = %d " +
+                            "AND " +
+                            "m1.message_id > %d order by m1.id asc";
+
+            sql = String.format(sql, userId, messageId);
+
+            System.out.println(sql);
+            SQLQuery query = session.createSQLQuery(sql).addEntity(Message.class);
+            query.setMaxResults(1);
+
+            List<Message> messages = (List<Message>)query.list();
+            if(messages.size() > 0) {
+                result = messages.get(0).getId();
+            }
+            session.getTransaction().commit();
+            return result;
+
+        } catch(Throwable t) {
+            t.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return null;
+
+    }
+
+    /**
+     * Get the last version of all the messages for a specified user.
+     * @return
+     */
+    public static Integer getPrevUserMessageId(Integer userId, Integer messageId) {
+        Session session = null;
+        Integer result = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            session.beginTransaction();
+            String sql = null;
+            sql =
+                    "select m1.id as id, m1.user_id as user_id , m1.message_id as message_id , m1.version_id as version_id, m1.title as title , m1.author as author , m1.created as created, m1.object_id  from " +
+                            "message m1 " +
+                            "where " +
+                            "m1.user_id = %d " +
+                            "AND " +
+                            "m1.message_id < %d order by m1.id desc";
+
+            sql = String.format(sql, userId, messageId);
+
+            System.out.println(sql);
+            SQLQuery query = session.createSQLQuery(sql).addEntity(Message.class);
+            query.setMaxResults(1);
+
+            List<Message> messages = (List<Message>)query.list();
+            if(messages.size() > 0) {
+                result = messages.get(0).getId();
+            }
+            session.getTransaction().commit();
+            return result;
+
+        } catch(Throwable t) {
+            t.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return null;
+
+    }
+
+    /**
+     * Get the message by id for a specified user.
+     * @return
+     */
+    public static Message getMessageById(Integer id) {
+        Session session = null;
+        Message result = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            session.beginTransaction();
+            String sql = null;
+            sql =
+                    "select m1.id as id, m1.user_id as user_id , m1.message_id as message_id , m1.version_id as version_id, m1.title as title , m1.author as author , m1.created as created, " +
+                            " m1.object_id  from " +
+                            " message m1 " +
+                            " where " +
+                            " m1.id = %d order by m1.id desc";
+
+            sql = String.format(sql, id);
+
+            System.out.println(sql);
+            SQLQuery query = session.createSQLQuery(sql).addEntity(Message.class);
+
+            List<Message> messages = (List<Message>)query.list();
+            if(messages.size() > 0) {
+                result = messages.get(0);
+            }
+            session.getTransaction().commit();
+            return result;
+
+        } catch(Throwable t) {
+            t.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return null;
+
+    }
 
     /**
      * Get the last version of all the messages for a specified user.
@@ -185,8 +318,8 @@ public class MessageAPI {
 
             session.beginTransaction();
             String sql = "select id, user_id, message_id, version_id, title, author, created from message";
-            sql =
-                    "select m1.id as id, m1.user_id as user_id , m1.message_id as message_id , m1.version_id as version_id, m1.title as title , m1.author as author , m1.created as created  from ( " +
+            sql = "select m1.id as id, m1.user_id as user_id , m1.message_id as message_id , " +
+                    "m1.version_id as version_id, m1.title as title , m1.author as author , m1.created as created, m1.object_id as object_id  from ( " +
                     "select M.user_id as user_id, M.message_id as message_id, max(M.version_id) as max_version_id from message M  where user_id = %d group by M.user_id, M.message_id " +
                     ") m2 " +
                     "INNER JOIN " +
@@ -246,6 +379,88 @@ public class MessageAPI {
         }
 
         return vNewMessageResponse;
+    }
+
+    public static Integer getPrevUserVersionId(Integer userId, Integer messageId, Integer versionId) {
+        Session session = null;
+        Integer result = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            session.beginTransaction();
+            String sql = null;
+            sql =
+                    "select m1.id as id, m1.user_id as user_id , m1.message_id as message_id , m1.version_id as version_id, m1.title as title , m1.author as author , m1.created as created, m1.object_id  from " +
+                            "message m1 " +
+                            "where " +
+                            "m1.user_id = %d " +
+                            "AND " +
+                            "m1.message_id = %d " +
+                            "AND " +
+                            "m1.version_id < %d " +
+                            "order by m1.id desc";
+
+            sql = String.format(sql, userId, messageId, versionId);
+
+            System.out.println(sql);
+            SQLQuery query = session.createSQLQuery(sql).addEntity(Message.class);
+            query.setMaxResults(1);
+
+            List<Message> messages = (List<Message>)query.list();
+            if(messages.size() > 0) {
+                result = messages.get(0).getId();
+            }
+            session.getTransaction().commit();
+            return result;
+
+        } catch(Throwable t) {
+            t.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return null;
+    }
+
+    public static Integer getNextUserVersionId(Integer userId, Integer messageId, Integer versionId) {
+        Session session = null;
+        Integer result = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            session.beginTransaction();
+            String sql = null;
+            sql =
+                    "select m1.id as id, m1.user_id as user_id , m1.message_id as message_id , m1.version_id as version_id, m1.title as title , m1.author as author , m1.created as created, m1.object_id  from " +
+                            "message m1 " +
+                            "where " +
+                            "m1.user_id = %d " +
+                            "AND " +
+                            "m1.message_id = %d " +
+                            "AND " +
+                            "m1.version_id > %d " +
+                            "order by m1.id asc";
+
+            sql = String.format(sql, userId, messageId, versionId);
+
+            System.out.println(sql);
+            SQLQuery query = session.createSQLQuery(sql).addEntity(Message.class);
+            query.setMaxResults(1);
+
+            List<Message> messages = (List<Message>)query.list();
+            if(messages.size() > 0) {
+                result = messages.get(0).getId();
+            }
+            session.getTransaction().commit();
+            return result;
+
+        } catch(Throwable t) {
+            t.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return null;
     }
 
 
