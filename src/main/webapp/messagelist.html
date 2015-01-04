@@ -1,16 +1,13 @@
-<!--
-  ~ Copyright (c) 2014. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
-  -->
-
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/v-common.js"></script>
+    <script src="lib/v-dateformat.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/v-common.css">
+    <link rel="stylesheet" type="text/css" href="css/v-messagelist.css">
     <script>
+
         $(document).ready(function(){
             $.get("/rest/json/messagelist/all/user/1",function(data,status){
                 $('#thetable tr').not(':first').not(':last').remove();
@@ -27,7 +24,7 @@
                                 data.messages[i].author +
                                 '</td>' +
                                 '<td>' +
-                                data.messages[i].created +
+                                new Date(data.messages[i].created).format("dd-mm-yy HH:MM:ss") +
                                 '</td>' +
                                 '</tr>';
                 }
@@ -49,9 +46,9 @@
         <th>Date</th>
     </tr>
     <tr>
-        <td>title will be here</td>
-        <td>author will be here</td>
-        <td>date will be here</td>
+        <td></td>
+        <td></td>
+        <td></td>
     </tr>
     <tr>
         <td></td>

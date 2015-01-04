@@ -1,253 +1,40 @@
 <!doctype html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-	<title>jsdifflib demo</title>
-	<link rel="stylesheet" type="text/css" href="lib/diffview.css"/>
-	<script type="text/javascript" src="lib/diffview.js"></script>
-	<script type="text/javascript" src="lib/difflib.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script>
-        $.extend({
-          getUrlVars: function(){
-            var vars = [], hash;
-            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-            for(var i = 0; i < hashes.length; i++)
-            {
-              hash = hashes[i].split('=');
-              vars.push(hash[0]);
-              vars[hash[0]] = hash[1];
-            }
-            return vars;
-          },
-          getUrlVar: function(name){
-            return $.getUrlVars()[name];
-          }
-        });
-        $(document).ready(function(){
-            //Second call with this:
-            // Get object of URL parameters
-            var allVars = $.getUrlVars();
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<title>Version Diff View</title>
+		<link rel="stylesheet" type="text/css" href="css/diffview.css"/>
+		<link rel="stylesheet" type="text/css" href="css/v-common.css"/>
+		<link rel="stylesheet" type="text/css" href="css/v-mdiff.css"/>
+		<script type="text/javascript" src="lib/diffview.js"></script>
+		<script type="text/javascript" src="lib/difflib.js"></script>
+		<script src="lib/jquery.min.js"></script>
+		<script src="lib/v-common.js"></script>
+		<script src="lib/v-mdiff.js"></script>
+	</head>
 
-            // Getting URL var by its nam
-            var messageId = $.getUrlVar('messageId');
-            messageId = messageId || 1;
-			$("userId").val(1);
-            $("messageId").val(messageId);
-            $("versionId").val(-1);
-            //var docId = $.url;
-            //alert("hmmm!");
-            $("#findOlder").click(function(event) {
-                // Stop form from submitting normally
-                event.preventDefault();
+	<body>
 
-                // Get some values from elements on the page:
-                var vuserId = $("#userId").val();
-				var vmessageId = $("#messageId").val();
-				var vversionId = $("#versionId").val() - 1;
-				var vurl = "/rest/json/messagelist/all/message/diff";
-                var requestData = { "userId" : vuserId,  "messageId": vmessageId, "versionId" : vversionId};
+		<form method="post" action="/rest/json/messagelist/all/message/diff" id="messageDiffForm">
+			<input id="userId" type="hidden" name="userId" value="1">
+			<input id="messageId" type="hidden" name="messageId" value="1">
+			<input id="versionId" type="hidden" name="versionId" value="1">
 
-                $.ajax ({
-                    "url": vurl,
-                    "type": "POST",
-                    "data": JSON.stringify(requestData),
-                    "dataType": "json",
-                    "contentType": "application/json; charset=utf-8",
-                    "success": function(data){
-                        //alert('post complete' + data);
-                        //Verify that there was no failure
-                        if(data.success == false) {
-                        	alert(data.reason);
-                        	return;
-                        }
-                        //Set up hidden fields in form for next submit
-                        $("#userId").val(data.userId);
-                        $("#messageId").val(data.messageId);
-                        $("#versionId").val(data.versionNumber);
-                        //Manage Link show/hide
-						$('#findOlder').show();
-                        $('#findNewer').show();
-                        if(data.versionNumber == data.maxVersionNumber) {
-                        	$('#findNewer').hide();
-                        }
-                     	if(data.versionNumber == 1) {
-                        	$('#findOlder').hide();
-                        }
-                        //Handle Diff functionality
-                        $('#baseText').val(data.oldMessage);
-            			$('#newText').val(data.newMessage);
-            	 		diffUsingJS(0);
-                    }
+			<div>
+				<a id="findOlder" href="">Older</a> &nbsp; &nbsp; <a id="findNewer" href="">Newer</a>
+			</div>
+			<div class="textInput">
+				<h2>Older</h2>
+				<textarea id="baseText"></textarea>
+			</div>
+			<div class="textInput spacer">
+				<h2>Newer</h2>
+				<textarea id="newText"></textarea>
+			</div>
+			<div id="diffoutput"> </div>
+		</form>
 
-                });
-            });
+	</body>
 
-			$("#findNewer").click(function(data) {
-                // Stop form from submitting normally
-                event.preventDefault();
-
-                // Get some values from elements on the page:
-                var vuserId = $("#userId").val();
-				var vmessageId = $("#messageId").val();
-				var vversionId = parseInt($("#versionId").val()) + 1;
-				var vurl = "/rest/json/messagelist/all/message/diff";
-                var requestData = { "userId" : vuserId,  "messageId": vmessageId, "versionId" : vversionId};
-
-                $.ajax ({
-                    "url": vurl,
-                    "type": "POST",
-                    "data": JSON.stringify(requestData),
-                    "dataType": "json",
-                    "contentType": "application/json; charset=utf-8",
-                    "success": function(data){
-                        //alert('post complete' + data);
-                        //Verify that there was no failure
-                        if(data.success == false) {
-                        	alert(data.reason);
-                        	return;
-                        }
-                         //Set up hidden fields in form for next submit
-                        $("#userId").val(data.userId);
-                        $("#messageId").val(data.messageId);
-                        $("#versionId").val(data.versionNumber);
-                        //Manage Link show/hide
-						$('#findOlder').show();
-                        $('#findNewer').show();
-                        if(data.versionNumber == data.maxVersionNumber) {
-                        	$('#findNewer').hide();
-                        }
-                     	if(data.versionNumber == 1) {
-                        	$('#findOlder').hide();
-                        }
-                        //Handle Diff functionality
-                        $('#baseText').val(data.oldMessage);
-            			$('#newText').val(data.newMessage);
-            	 		diffUsingJS(0);
-                    }
-
-                });
-            });
-
-            $.get("/rest/json/messagelist/all/user/1/message/" + messageId + "/version/" + "-1",function(data,status){
-                        //alert('post complete' + data);
-                        //Verify that there was no failure
-                        if(data.success == false) {
-                        	alert(data.reason);
-                        	return;
-                        }
-                        //Set up hidden fields in form for next submit
-                        $("#userId").val(data.userId);
-                        $("#messageId").val(data.messageId);
-                        $("#versionId").val(data.versionNumber);
-                        //Manage Link show/hide
-						$('#findOlder').show();
-                        $('#findNewer').show();
-                        if(data.versionNumber == data.maxVersionNumber) {
-                        	$('#findNewer').hide();
-                        }
-                     	if(data.versionNumber == 1) {
-                        	$('#findOlder').hide();
-                        }
-                        //Handle Diff functionality
-                        $('#baseText').val(data.oldMessage);
-            			$('#newText').val(data.newMessage);
-            	 		diffUsingJS(0);
-            });
-
-
-		});
-
-
-
-
-    </script>
-	<style type="text/css">
-		body {
-		font-size: 12px;
-		font-family: Sans-Serif;
-		}
-		h2 {
-		margin: 0.5em 0 0.1em;
-		text-align: center;
-		}
-		.top {
-		text-align: center;
-		}
-		.textInput {
-		display: block;
-		width: 49%;
-		float: left;
-		}
-		textarea {
-		width:100%;
-		height:300px;
-		}
-		label:hover {
-		text-decoration: underline;
-		cursor: pointer;
-		}
-		.spacer {
-		margin-left: 10px;
-		}
-		.viewType {
-		font-size: 16px;
-		clear: both;
-		text-align: center;
-		padding: 1em;
-		}
-		#diffoutput {
-		width: 100%;
-		}
-	</style>
-
-	<script type="text/javascript">
-
-function diffUsingJS(viewType) {
-	"use strict";
-	var byId = function (id) { return document.getElementById(id); },
-		base = difflib.stringAsLines(byId("baseText").value),
-		newtxt = difflib.stringAsLines(byId("newText").value),
-		sm = new difflib.SequenceMatcher(base, newtxt),
-		opcodes = sm.get_opcodes(),
-		diffoutputdiv = byId("diffoutput");
-
-	diffoutputdiv.innerHTML = "";
-
-	diffoutputdiv.appendChild(diffview.buildView({
-		baseTextLines: base,
-		newTextLines: newtxt,
-		opcodes: opcodes,
-		baseTextName: "Older",
-		newTextName: "Newer",
-		contextSize: null,
-		viewType: viewType
-	}));
-}
-
-</script>
-</head>
-<body>
-<form method="post" action="/rest/json/messagelist/all/message/diff" id="messageDiffForm">
-	<input id="userId" type="hidden" name="userId" value="1">
-	<input id="messageId" type="hidden" name="messageId" value="1">
-	<input id="versionId" type="hidden" name="versionId" value="1">
-
-	<div>
-		<a id="findOlder" href="">Older</a> &nbsp; &nbsp; <a id="findNewer" href="">Newer</a>
-	</div>
-<div class="textInput">
-	<h2>Older</h2>
-	<textarea id="baseText"></textarea>
-</div>
-<div class="textInput spacer">
-	<h2>Newer</h2>
-	<textarea id="newText"></textarea>
-</div>
-
-<div id="diffoutput"> </div>
-
-</form>
-</body>
 </html>

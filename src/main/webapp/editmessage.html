@@ -1,161 +1,55 @@
-<!--
-  ~ Copyright (c) 2015. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
-  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
-  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
-  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
-  -->
-
 <!DOCTYPE html>
 <html>
-<head>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="lib/marked.js"></script>
+    <head>
+        <script src="lib/jquery.min.js"></script>
+        <script src="lib/v-common.js"></script>
+        <script src="lib/v-dateformat.js"></script>
+        <script src="lib/v-editmessage.js"></script>
+        <script src="lib/marked.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/v-common.css">
+        <link rel="stylesheet" type="text/css" href="css/v-editmessage.css">
+    </head>
 
-    <script>
-        $.extend({
-          getUrlVars: function(){
-            var vars = [], hash;
-            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-            for(var i = 0; i < hashes.length; i++)
-            {
-              hash = hashes[i].split('=');
-              vars.push(hash[0]);
-              vars[hash[0]] = hash[1];
-            }
-            return vars;
-          },
-          getUrlVar: function(name){
-            return $.getUrlVars()[name];
-          }
-        });
+    <body>
+        <form method="post" action="/rest/json/messagelist/all/message/add" id="addMessageForm">
 
+            <input id="uuid" type="hidden" name="uuid">
+            <input id="messageId" type="hidden" name="messageId" value="">
+            <input id="versionId" type="hidden" name="lastVersionId" value="">
+            <input type="hidden" name="userId" value="1">
+            <table>
+                <tr><td>
+                    Author:
+                </td></tr>
+                <tr><td>
+                    <input id="author" type="text" name="author">
+                </td></tr>
+                <tr><td>
+                    Title:
+                </td></tr>
+                <tr><td>
+                    <input id="title" type="text" name="title">
+                </td></tr>
+                <tr><td>
+                    Content:
+                </td></tr>
+                <tr><td>
+                    <textarea id="text-input" rows="10" cols="60" name="content"></textarea>
+                </td></tr>
+                <tr><td>
+                    Preview:
+                </td></tr>
+                <tr><td>
+                    <div id="preview"> </div>
+                </td></tr>
+                <tr><td>
+                    <input type="submit" value="Submit">
+                </td></tr>
 
-        $(document).ready(function(){
-            //Second call with this:
-            // Get object of URL parameters
-            //var allVars = $.getUrlVars();
+            </table>
 
-            // Getting URL var by its nam
-            var id = $.getUrlVar('id');
-            //var docId = $.url;
-            //alert("DocId=" + docId);
-            var url = null;
-            if(id == null) {
-                url = "/rest/json/messagelist/all/user/1/message";
-                $.get(url,function(data,status){
-                    //alert("Data: " + data.uuid + "\nStatus: " + status);
-                    $('#uuid').val(data.uuid);
-                });
-            } else {
-                url = "/rest/json/messagelist/all/user/1/message/" + id + "/latest";
-                $.get(url,function(data,status){
-                    //alert("Data: " + data.uuid + "\nStatus: " + status);
-                    $('#uuid').val(data.uuidOverride);
-                    $('#messageId').val(data.messageId);
-                    $('#versionId').val(data.vmessage.versionNumber);
-                    $('#author').val(data.vmessage.author);
-                    $('#title').val(data.vmessage.title);
-                    $('#text-input').val(data.vmessage.content);
-                     $("#preview").html(marked("#" + data.vmessage.title + "\n" + "## *By:*" + data.vmessage.author + "\n" + data.vmessage.content));
-                });
-            }
-
-
-            //preview.innerHTML = markdown.toHTML(input.value);
-            $( "#text-input" ).keyup(function() {
-                var title = $( "#title" ).val();
-                var author = $( "#author" ).val();
-                var content = $( "#text-input" ).val();
-                $("#preview").html(marked("#" + title + "\n" + "## *By:*" + author + "\n" + content));
-            });
-
-            $( "#addMessageForm" ).submit(function( event ) {
-
-                // alert('TEST IT COMES HERE');
-                // Stop form from submitting normally
-                event.preventDefault();
-
-                // Get some values from elements on the page:
-                var $form = $( this ),
-                    vmessageId = $form.find( "input[name='messageId']" ).val(),
-                    vlastVersionId = $form.find( "input[name='lastVersionId']" ).val(),
-                    vuserId = $form.find( "input[name='userId']" ).val(),
-                    vauthor = $form.find( "input[name='author']" ).val(),
-                    vtitle = $form.find( "input[name='title']" ).val(),
-                    vcontent = $form.find( "textarea[name='content']" ).val(),
-                    vuuid = $form.find( "input[name='uuid']" ).val(),
-                    vurl = $form.attr( "action" );
-
-                var requestData = { "uuid" : vuuid,  "messageId": vmessageId, "lastVersionId" : vlastVersionId, "userId" : vuserId, "author" : vauthor, "title" : vtitle, "content" : vcontent};
-
-                $.ajax ({
-                    "url": vurl,
-                    "type": "POST",
-                    "data": JSON.stringify(requestData),
-                    "dataType": "json",
-                    "contentType": "application/json; charset=utf-8",
-                    "success": function(data){
-                        //alert('post complete' + data);
-                        $('#messageId').val(data.messageId);
-                        $('#versionId').val(data.versionId);
-                    }
-
-                });
-            });
-
-
-
-        });
-
-    </script>
-</head>
-<body>
-
-
-
-<form method="post" action="/rest/json/messagelist/all/message/add" id="addMessageForm">
-
-    <input id="uuid" type="hidden" name="uuid">
-    <input id="messageId" type="hidden" name="messageId" value="">
-    <input id="versionId" type="hidden" name="lastVersionId" value="">
-    <input type="hidden" name="userId" value="1">
-    <table>
-        <tr><td>
-            Author:
-        </td></tr>
-        <tr><td>
-            <input id="author" type="text" name="author">
-        </td></tr>
-        <tr><td>
-            Title:
-        </td></tr>
-        <tr><td>
-            <input id="title" type="text" name="title">
-        </td></tr>
-        <tr><td>
-            Content:
-        </td></tr>
-        <tr><td>
-            <textarea id="text-input" rows="10" cols="60" name="content"></textarea>
-        </td></tr>
-        <tr><td>
-            Preview:
-        </td></tr>
-        <tr><td>
-            <div id="preview"> </div>
-        </td></tr>
-        <tr><td>
-            <input type="submit" value="Submit">
-        </td></tr>
-
-    </table>
-
-</form>
-
-
-
-</body>
+        </form>
+    </body>
 </html>
 
 
