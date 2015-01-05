@@ -9,6 +9,15 @@
         <welcome-file>messagelist.html</welcome-file>
     </welcome-file-list>
 
+    <filter>
+        <filter-name>filterName</filter-name>
+        <filter-class>org.example.MyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <url-pattern>/hello</url-pattern>
+        <filter-name>filterName</filter-name>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>Hello</servlet-name>
         <servlet-class>org.example.HelloServlet</servlet-class>
