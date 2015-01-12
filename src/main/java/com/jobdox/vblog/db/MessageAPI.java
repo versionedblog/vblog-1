@@ -130,12 +130,6 @@ public class MessageAPI {
 
     }
 
-    /**
-     * select foo
-     from Foo foo, Bar bar
-     where foo.startDate = bar.date
-
-     */
 
     /**
      * Get the last version of all the messages for a specified user.

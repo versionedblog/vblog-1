@@ -6,16 +6,9 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package foo;
-
-import java.io.File;
-import java.net.URL;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
+package junk1;
 
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.*;
-import org.eclipse.jetty.util.StringUtil;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 

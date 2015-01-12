@@ -6,9 +6,7 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package foo;
-
-import java.awt.EventQueue;
+package junk1;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;

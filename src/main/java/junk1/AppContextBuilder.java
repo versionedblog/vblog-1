@@ -6,7 +6,7 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package foo;
+package junk1;
 
 import org.eclipse.jetty.webapp.WebAppContext;
 
