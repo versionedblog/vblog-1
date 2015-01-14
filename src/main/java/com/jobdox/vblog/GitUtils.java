@@ -52,7 +52,7 @@ public class GitUtils {
 
 
     private static Repository initRepository() {
-        File gitDir = new File(vblogProperties.getProperty("RepositoryPath") + "/.git");
+        File gitDir = new File(vblogProperties.getProperty("RepositoryPath").replaceAll("user-to-replace", System.getenv("USER")) + "/.git");
         Repository repository = null;
         try {
             repository = new FileRepository(gitDir);
@@ -158,7 +158,7 @@ public class GitUtils {
 
     public static boolean updateFile(String fileName, String fileContent, String comment) {
 
-        File file = new File(vblogProperties.getProperty("RepositoryPath") + "/" + fileName);
+        File file = new File(vblogProperties.getProperty("RepositoryPath").replaceAll("user-to-replace", System.getenv("USER")) + "/" + fileName);
         String userName = vblogProperties.getProperty("RepositoryUserName");
         String password = vblogProperties.getProperty("RepositoryPassword");
 
