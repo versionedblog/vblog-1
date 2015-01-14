@@ -15,7 +15,7 @@ import com.jobdox.vblog.db.MessageAPI;
 import org.eclipse.jgit.lib.ObjectId;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +26,11 @@ import java.util.UUID;
  */
 @Path("/json/messagelist")
 public class MessageListService {
+    @Context
+    UriInfo uriInfo;
 
+    @Context
+    Request request;
     /**
      * Get the complete list of messages for a specified user
      *
@@ -38,6 +42,10 @@ public class MessageListService {
     @Produces(MediaType.APPLICATION_JSON)
     public VMessageList getMesageListInJSON(@PathParam("userId") Integer userId) {
 
+        MultivaluedMap<String, String> mvmpp = uriInfo.getPathParameters();
+        MultivaluedMap<String, String> mvmqp = uriInfo.getQueryParameters();
+        String hostName = uriInfo.getBaseUri().getHost();
+        System.out.println("HostName:" + hostName);
         VMessageList vMessageList = new VMessageList();
         vMessageList.setUserId(userId.toString());
         vMessageList.setUserName("umesh");
