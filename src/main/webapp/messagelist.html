@@ -11,27 +11,42 @@
         $(document).ready(function(){
             $.get("/rest/json/messagelist/all/user/1",function(data,status){
                 $('#thetable tr').not(':first').not(':last').remove();
-                var html = '';
+                $('#messagelisttopdiv').empty();
+
+                var html2 =
+                    '<div class="cell">' +
+                    '<b>Title</b>' +
+                    '</div>' +
+                    '<div class="cell">' +
+                    '<b>Author</b>' +
+                    '</div>' +
+                    '<div class="cell">' +
+                    '<b>Date</b>' +
+                    '</div>' +
+                    '<div id="breaker"></div>';
                 if(data.messages) {
-                    for(var i = 0; i < data.messages.length; i++)
-                        html += '<tr>' +
-                                '<td>' +
+                    for(var i = 0; i < data.messages.length; i++) {
+                        html2 +=
+                                '<div class="cell">' +
                                 '<a href="message.html?id=' +
                                 data.messages[i].id +
                                 '">' + data.messages[i].title + '</a>' +
-                                '</td>' +
-                                '<td>' +
+                                '</div>' +
+                                '<div class="cell">' +
                                 data.messages[i].author +
-                                '</td>' +
-                                '<td>' +
+                                '</div>' +
+                                '<div class="cell">' +
                                 new Date(data.messages[i].created).format("dd-mm-yy HH:MM:ss") +
-                                '</td>' +
-                                '</tr>';
+                                '</div>' +
+                                '<div id="breaker"></div>';
+                    }
                 }
-                $('#thetable tr').first().after(html);
+                $('#messagelisttopdiv').html(html2);
             });
 
 });
+
+
 
 
 
@@ -39,36 +54,131 @@
 </head>
 <body>
 
-<table id="thetable">
-    <tr>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Date</th>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-</table>
+
+<div class="content">
+
+    <div class="header">
+        <h1>EVOTA</h1>
+        <h3><i>Evolution in Thinking Application</i></h3>
+    </div>
+
+
+    <div id="messagelisttopdiv">
+
+
+        <div class="cell">
+            Cell
+        </div>
+        <div class="cell">
+            Cell
+        </div>
+        <div class="cell">
+            Cell
+        </div>
+
+        <div class="breaker">
+        </div>
+        <div class="cell">
+            Cell
+        </div>
+        <div class="cell">
+            Cell
+        </div>
+        <div class="cell">
+            Cell
+        </div>
+
+        <div class="breaker">
+        </div>
+
+        <div class="cell">
+            Cell
+        </div>
+        <div class="cell">
+            Cell
+        </div>
+        <div class="cell">
+            Cell
+        </div>
+
+        <div class="breaker">
+        </div>
+
+        <div class="cell">
+            Cell
+        </div>
+        <div class="cell">
+            Cell
+        </div>
+        <div class="cell">
+            Cell
+        </div>
+
+        <div class="breaker">
+        </div>
+
+    </div>
+
+    <div class="navright">
+        xx<br>
+        yy<br>
+        zz<br>
+    </div>
+
+    <!--
+    <div class="nav">
+        London<br>
+        Paris<br>
+        Tokyo<br>
+    </div>
+
+
+    <div class="section">
+        <h2>London</h2>
+
+        <p>
+            London is the capital city of England. It is the most populous city in the United Kingdom,
+            with a metropolitan area of over 13 million inhabitants.
+        </p>
+
+        <p>
+            Standing on the River Thames, London has been a major settlement for two millennia,
+            its history going back to its founding by the Romans, who named it Londinium.
+        </p>
+    </div>
+
+    <div class="breaker">
+    </div>
+
+
+    <div class="nav">
+        London<br>
+        Paris<br>
+        Tokyo<br>
+    </div>
+
+
+    <div class="section">
+        <h2>London</h2>
+
+        <p>
+            London is the capital city of England. It is the most populous city in the United Kingdom,
+            with a metropolitan area of over 13 million inhabitants.
+        </p>
+
+        <p>
+            Standing on the River Thames, London has been a major settlement for two millennia,
+            its history going back to its founding by the Romans, who named it Londinium.
+        </p>
+    </div>
+
+-->
+    <div class="footer">
+        Copyright &copy; haha
+    </div>
+
+</div>
+
+
 </body>
 </html>
-
-
-<html>
-
-<head>
-
-
-</head>
-
-<body>
-
-</body>
-</html>
-

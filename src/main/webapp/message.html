@@ -57,13 +57,15 @@
                     $('#nextVersionLink').html(nextVersionLink);
                 }
 
-                var title = $( "#title" ).val();
-                var author = $( "#author" ).val();
-                var content = $( "#text-input" ).val();
-                $("#content").html(marked("####" + data.vmessage.title + "\n" + "#### *By:*" + data.vmessage.author + ", " +" *At:*" + new Date(data.vmessage.created) + "\n" +  data.vmessage.content));
+                //var title = $( "#title" ).val();
+                //var author = $( "#author" ).val();
+                //var content = $( "#text-input" ).val();
+                //"####" + data.vmessage.title + "\n" + "#### *By:*" + data.vmessage.author + ", " +" *At:*" + new Date(data.vmessage.created) + "\n" +
 
-                //$('#title').html(data.vmessage.title);
-                //$('#content').html(data.vmessage.content);
+                $("#date").html(new Date(data.vmessage.created));
+                $("#title").html(data.vmessage.title);
+                $("#author").html(data.vmessage.author);
+                $("#message").html(marked(data.vmessage.content));
 
             });
 
@@ -76,20 +78,48 @@
 </head>
 <body>
 
-<table id="thetable">
-    <tr>
-        <td id="prevMessageLink">Prev Message Link</td>
-        <td id="nextMessageLink">Next Message Link</td>
-    </tr>
-    <tr>
-        <td id="prevVersionLink">Prev Version Link</td>
-        <td id="nextVersionLink">Next Version Link</td>
-    </tr>
-    <tr>
-        <td id="content" colspan="2"> Content will be here</td>
-    </tr>
-</table>
+<div class="content">
+    <div class="header">
+        <h1>EVOTA</h1>
+        <h3><i>Evolution in Thinking Application</i></h3>
+    </div>
 
+    <div id="thetable" class="messageholder">
+
+            <div class="fl"><h1><span id="title">Title</span></h1></div>
+            <div id="empty" class="fr"></div>
+            <div class="breaker"></div>
+
+            <div id="date" class="fl date">Date</div>
+            <div id="author" class="fr author">Author</div>
+            <div class="breaker"></div>
+
+            <div id="prevMessageLink" class="fl">Prev Message Link</div>
+            <div id="nextMessageLink" class="fr">Next Message Link</div>
+            <div class="breaker"></div>
+
+            <div id="prevVersionLink" class="fl">Prev Version Link</div>
+            <div id="nextVersionLink" class="fr">Next Version Link</div>
+            <div class="breaker"></div>
+
+            <div id="message" colspan="2"> Content will be here</div>
+
+    </div>
+
+    <div class="navright">
+        xx<br>
+        yy<br>
+        zz<br>
+    </div>
+
+    <div class="breaker">
+    </div>
+
+    <div class="footer">
+        Copyright &copy; haha
+    </div>
+
+</div>
 
 </body>
 </html>

@@ -1,3 +1,75 @@
 body {
     background-color: lightblue;
 }
+
+#messagelisttopdiv {
+ float:left;
+}
+
+.fl {
+ float:left;
+}
+.fr {
+ float:right;
+}
+
+        .messageholder {
+        width: 500px ;
+         float:left;
+        }
+
+        .content {
+        width: 1000px ;
+        margin-left: auto ;
+        margin-right: auto ;
+        border: 2px solid;
+        border-radius: 5px;
+        padding: 10px;
+        #background-color:black;
+        font-family: Tahoma, Arial, Helvetica, sans-serif;
+        font-size: 15px;
+        }
+
+        .header {
+        background-color:black;
+        color:white;
+        text-align:center;
+        padding:5px;
+        }
+        .nav {
+        line-height:30px;
+        background-color:#eeeeee;
+        height:300px;
+        width:100px;
+        float:left;
+        padding:5px;
+        }
+        .navright {
+        line-height:30px;
+        background-color:#eeeeee;
+        height:300px;
+        width:100px;
+        float:right;
+        padding:5px;
+        }
+        .section {
+        width:350px;
+        float:left;
+        padding:10px;
+        }
+        .breaker {
+        clear:both;
+        }
+        .footer {
+        background-color:black;
+        color:white;
+        clear:both;
+        text-align:center;
+        padding:5px;
+        }
+
+        .cell {
+        width:200px;
+        float:left;
+        padding:2px;
+        }
