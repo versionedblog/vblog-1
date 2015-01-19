@@ -129,7 +129,7 @@ public class MessageListService {
     }
 
     @GET
-    @Path("/all/user/diff/{userId}/message/{messageId}/version/{versionId}")
+    @Path("/all/diff/user/{userId}/message/{messageId}/version/{versionId}")
     @Produces(MediaType.APPLICATION_JSON)
     public VMessageDiffResponse getMessageDiffInJSON(@PathParam("userId") Integer userId, @PathParam("messageId") Integer messageId, @PathParam("versionId") Integer versionId) {
         return getMessageDiff(userId, messageId, versionId);
