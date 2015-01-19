@@ -11,44 +11,131 @@
     </head>
 
     <body>
-        <form method="post" action="/rest/json/messagelist/all/message/add" id="addMessageForm">
 
-            <input id="uuid" type="hidden" name="uuid">
-            <input id="messageId" type="hidden" name="messageId" value="">
-            <input id="versionId" type="hidden" name="lastVersionId" value="">
-            <input type="hidden" name="userId" value="1">
-            <table>
-                <tr><td>
-                    Author:
-                </td></tr>
-                <tr><td>
-                    <input id="author" type="text" name="author">
-                </td></tr>
-                <tr><td>
+    <div class="content">
+        <div class="header">
+            <h1>EVOTA</h1>
+            <h3><i>Evolution in Thinking Application</i></h3>
+        </div>
+
+        <div class="nav">
+            <a href="messagelist.html">List Messages</a><br>
+        </div>
+
+        <div id="thetable" class="messageholder">
+
+            <form method="post" action="/rest/json/messagelist/all/message/add" id="addMessageForm">
+
+                <input id="uuid" type="hidden" name="uuid">
+                <input id="messageId" type="hidden" name="messageId" value="">
+                <input id="versionId" type="hidden" name="lastVersionId" value="">
+                <input type="hidden" name="userId" value="1">
+
+                <div>
+                    <h2> <span id="messageIdIndicator"></span> <span id="versionIdIndicator"></span> </h2>
+                </div>
+
+                <div class="fr actionLink">
+                    <div id="saveLink"></div><div id="saveLabel">Add Content to Save</div>
+                </div>
+
+
+                <div class="breaker">
+
+                </div>
+
+                <div>
+
+                </div>
+
+                <div class="formFieldTitle">
+                    <hr>
                     Title:
-                </td></tr>
-                <tr><td>
-                    <input id="title" type="text" name="title">
-                </td></tr>
-                <tr><td>
+                </div>
+
+                <div>
+                    <input id="title" type="text" name="title" size="50">
+                </div>
+                <div class="formFieldTitle">
+                    Author:
+                </div>
+                <div>
+                    <input id="author" type="text" name="author" size="50">
+                </div>
+                <div class="formFieldTitle">
                     Content:
-                </td></tr>
-                <tr><td>
-                    <textarea id="text-input" rows="10" cols="60" name="content"></textarea>
-                </td></tr>
-                <tr><td>
-                    Preview:
-                </td></tr>
-                <tr><td>
+                </div>
+                <div>
+                    <textarea id="text-input" rows="20" cols="80" name="content"></textarea>
+                </div>
+                <div>
+                    <h2> Preview: </h2>
+                </div>
+                <div>
                     <div id="preview"> </div>
-                </td></tr>
-                <tr><td>
-                    <input type="submit" value="Submit">
-                </td></tr>
+                </div>
 
-            </table>
 
-        </form>
+            </form>
+
+        </div>
+
+        <div class="navright">
+
+        </div>
+
+
+        <div class="breaker">
+        </div>
+
+        <div class="nav">
+
+        </div>
+
+        <div id="thetable2" class="messageholder">
+
+            <!--
+            <div style="margin: auto 1.5em; display: inline-block;">Message Number <span id="messageNumber">20</span> </div>
+            <div class="breaker"></div>
+
+            <div style="margin: auto 1.5em; display: inline-block;">Version Number <span id="versionNumber">100</span></div>
+            <div class="breaker"></div>
+            -->
+            <div class="fl"><h1><span id="titlePreview"></span></h1></div>
+            <div id="empty" class="fr"></div>
+            <div class="breaker"></div>
+
+            <div id="datePreview" class="fl date"></div>
+            <div id="authorPreview" class="fr author"></div>
+            <div class="breaker"></div>
+            <!--
+            <div id="prevMessageLink" class="fl">Prev Message Link</div>
+            <div id="nextMessageLink" class="fr">Next Message Link</div>
+            <div class="breaker"></div>
+
+            <div id="prevVersionLink" class="fl">Prev Version Link</div>
+            <div id="nextVersionLink" class="fr">Next Version Link</div>
+            <div class="breaker"></div>
+            -->
+            <div id="messagePreview" colspan="2"></div>
+
+        </div>
+
+        <div class="navright">
+
+        </div>
+
+
+        <div class="breaker">
+        </div>
+
+        <div class="footer">
+            Copyright &copy; haha
+        </div>
+
+    </div>
+
+
     </body>
 </html>
 

@@ -1,3 +1,4 @@
+
 <!--
   ~ Copyright (c) 2014. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
   ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
@@ -22,50 +23,60 @@
             var allVars = $.getUrlVars();
 
             // Getting URL var by its nam
-            var messageId = $.getUrlVar('id');
+            var userId = $.getUrlVar('userId');
+            var messageId = $.getUrlVar('messageId');
+            var versionId = $.getUrlVar('versionId');
+            var editLink = "editmessage.html?userId=" + userId + "&messageId=" + messageId;
+            $('#editLink').attr("href", editLink);
+
             //var docId = $.url;
             //alert("DocId=" + docId);
-            $.get("/rest/json/messagelist/all/user/1/message/" + messageId,function(data,status){
+            $.get("/rest/json/messagelist/all/user/" + userId + "/message/" + messageId + "/version/" + versionId,function(data,status){
 
                 if(data.previousMessageId == null) {
-                    $('#prevMessageLink').hide();
+                    $('#prevMessageLink').html("Prev Message");
                 } else {
-                    var prevMessageLink = $("<a></a>").attr("href", "message.html?id="+data.previousMessageId).text("Prev Message");
-                    $('#prevMessageLink').show();
+                    var prevMessageLink = $("<a></a>").attr("href", "message.html?userId="+userId+"&messageId=" + data.previousMessageId + "&versionId=" + -1).text("Prev Message");
                     $('#prevMessageLink').html(prevMessageLink);
                 }
                 if(data.nextMessageId == null) {
-                    $('#nextMessageLink').hide();
+                    $('#nextMessageLink').html("Next Message");
                 } else {
-                    var nextMessageLink = $("<a></a>").attr("href", "message.html?id="+data.nextMessageId).text("Next Message");
-                    $('#nextMessageLink').show();
+                    var nextMessageLink = $("<a></a>").attr("href", "message.html?userId="+userId+"&messageId=" + data.nextMessageId + "&versionId=" + -1).text("Next Message");
                     $('#nextMessageLink').html(nextMessageLink);
                 }
 
                 if(data.previousVersionId == null) {
-                    $('#prevVersionLink').hide();
+                    $('#prevVersionLink').html("Older Version");
                 } else {
-                    var prevVersionLink = $("<a></a>").attr("href", "message.html?id="+data.previousVersionId).text("Prev Version");
-                    $('#prevVersionLink').show();
+                    var prevVersionLink = $("<a></a>").attr("href", "message.html?userId="+userId+"&messageId="+data.vmessage.messageId + "&versionId=" + data.previousVersionId).text("Older Version");
                     $('#prevVersionLink').html(prevVersionLink);
                 }
                 if(data.nextVersionId == null) {
-                    $('#nextVersionLink').hide();
+                    $('#nextVersionLink').html("Newer Version");
                 } else {
-                    var nextVersionLink = $("<a></a>").attr("href", "message.html?id="+data.nextVersionId).text("Next Version");
-                    $('#nextVersionLink').show();
+                    var nextVersionLink = $("<a></a>").attr("href", "message.html?userId="+userId+"&messageId="+data.vmessage.messageId + "&versionId=" + data.nextVersionId).text("Newer Version");
                     $('#nextVersionLink').html(nextVersionLink);
                 }
+
+                var firstVersionLink = $("<a></a>").attr("href", "message.html?userId="+userId+"&messageId="+data.vmessage.messageId + "&versionId=" + 1).text("First Version");
+                $('#firstVersionLink').html(firstVersionLink);
+
+                var lastVersionLink = $("<a></a>").attr("href", "message.html?userId="+userId+"&messageId="+data.vmessage.messageId + "&versionId=" + data.lastVersionId).text("Latest Version");
+                $('#lastVersionLink').html(lastVersionLink);
 
                 //var title = $( "#title" ).val();
                 //var author = $( "#author" ).val();
                 //var content = $( "#text-input" ).val();
                 //"####" + data.vmessage.title + "\n" + "#### *By:*" + data.vmessage.author + ", " +" *At:*" + new Date(data.vmessage.created) + "\n" +
 
-                $("#date").html(new Date(data.vmessage.created));
+                $("#date").html(new Date(data.vmessage.created).format("mmm d, yyyy HH:MM:ss"));
                 $("#title").html(data.vmessage.title);
                 $("#author").html(data.vmessage.author);
                 $("#message").html(marked(data.vmessage.content));
+
+                $("#messageNumber").html(data.vmessage.messageId);
+                $("#versionNumber").html(data.vmessage.versionNumber);
 
             });
 
@@ -84,8 +95,22 @@
         <h3><i>Evolution in Thinking Application</i></h3>
     </div>
 
+    <div class="nav">
+        <a href="messagelist.html">List Messages</a><br>
+        <a href="editmessage.html">New Message</a><br>
+        <a id="editLink" href="editmessage.html?userId=1&messageId=14">Edit Message</a><br>
+
+    </div>
+
     <div id="thetable" class="messageholder">
 
+            <!--
+            <div style="margin: auto 1.5em; display: inline-block;">Message Number <span id="messageNumber">20</span> </div>
+            <div class="breaker"></div>
+
+            <div style="margin: auto 1.5em; display: inline-block;">Version Number <span id="versionNumber">100</span></div>
+            <div class="breaker"></div>
+            -->
             <div class="fl"><h1><span id="title">Title</span></h1></div>
             <div id="empty" class="fr"></div>
             <div class="breaker"></div>
@@ -93,7 +118,7 @@
             <div id="date" class="fl date">Date</div>
             <div id="author" class="fr author">Author</div>
             <div class="breaker"></div>
-
+            <!--
             <div id="prevMessageLink" class="fl">Prev Message Link</div>
             <div id="nextMessageLink" class="fr">Next Message Link</div>
             <div class="breaker"></div>
@@ -101,16 +126,23 @@
             <div id="prevVersionLink" class="fl">Prev Version Link</div>
             <div id="nextVersionLink" class="fr">Next Version Link</div>
             <div class="breaker"></div>
-
+            -->
             <div id="message" colspan="2"> Content will be here</div>
 
     </div>
 
     <div class="navright">
-        xx<br>
-        yy<br>
-        zz<br>
+        <div>Message#: <span id="messageNumber">20</span> </div>
+        <div id="prevMessageLink">Prev Message Link</div>
+        <div id="nextMessageLink">Next Message Link</div>
+        <hr>
+        <div>Version#: <span id="versionNumber">100</span></div>
+        <div id="prevVersionLink">Prev Version Link</div>
+        <div id="nextVersionLink">Next Version Link</div>
+        <div id="firstVersionLink">First Version Link</div>
+        <div id="lastVersionLink">Latest Version Link</div>
     </div>
+
 
     <div class="breaker">
     </div>

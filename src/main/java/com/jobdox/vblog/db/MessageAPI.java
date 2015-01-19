@@ -159,7 +159,7 @@ public class MessageAPI {
 
             List<Message> messages = (List<Message>)query.list();
             if(messages.size() > 0) {
-                result = messages.get(0).getId();
+                result = messages.get(0).getMessageId();
             }
             session.getTransaction().commit();
             return result;
@@ -202,7 +202,7 @@ public class MessageAPI {
 
             List<Message> messages = (List<Message>)query.list();
             if(messages.size() > 0) {
-                result = messages.get(0).getId();
+                result = messages.get(0).getMessageId();
             }
             session.getTransaction().commit();
             return result;
@@ -402,7 +402,7 @@ public class MessageAPI {
 
             List<Message> messages = (List<Message>)query.list();
             if(messages.size() > 0) {
-                result = messages.get(0).getId();
+                result = messages.get(0).getVersionId();
             }
             session.getTransaction().commit();
             return result;
@@ -443,7 +443,7 @@ public class MessageAPI {
 
             List<Message> messages = (List<Message>)query.list();
             if(messages.size() > 0) {
-                result = messages.get(0).getId();
+                result = messages.get(0).getVersionId();
             }
             session.getTransaction().commit();
             return result;
@@ -500,7 +500,32 @@ public class MessageAPI {
 
     }
 
-    
+    public static Integer getLastVersionId(Integer userId, Integer messageId) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+
+            session.beginTransaction();
+            String sql = "select max(version_id) as version_id from message M  where user_id = %d and message_id=%d";
+            sql = String.format(sql, userId, messageId);
+
+            SQLQuery query = session.createSQLQuery(sql);
+
+            Integer versionId = (Integer)query.uniqueResult();
+
+            session.getTransaction().commit();
+            return versionId;
+
+        } catch(Throwable t) {
+            t.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return null;
+    }
+
+
 
 
                 /*

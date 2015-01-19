@@ -66,11 +66,11 @@ public class MessageListService {
     @GET
     @Path("/all/user/{userId}/message/{messageId}/latest")
     @Produces(MediaType.APPLICATION_JSON)
-    public VMessageEnvelope getLatestMessageInJSON(@PathParam("userId") Integer userId, @PathParam("messageId") Integer id) {
-        Message message = MessageAPI.getMessageById(id);
+    public VMessageEnvelope getLatestMessageInJSON(@PathParam("userId") Integer userId, @PathParam("messageId") Integer messageId) {
+        Message message = MessageAPI.getLatestUserMessage(userId, messageId);
         Message messageLatest = MessageAPI.getLatestUserMessage(userId, message.getMessageId());
-        System.out.println("Incoming id=" + id + ", Outgoing Id=" + messageLatest.getId());
-        VMessageEnvelope messageEnvelope =  getMessageInJSON(userId, messageLatest.getId());
+        System.out.println("Incoming id=" + messageId + ", Outgoing Id=" + messageLatest.getId());
+        VMessageEnvelope messageEnvelope =  getMessageInJSON(userId, messageLatest.getMessageId(), messageLatest.getVersionId());
         messageEnvelope.setUuidOverride(UUID.randomUUID().toString());
         return messageEnvelope;
     }
@@ -83,20 +83,25 @@ public class MessageListService {
      * @return
      */
     @GET
-    @Path("/all/user/{userId}/message/{messageId}")
+    @Path("/all/user/{userId}/message/{messageId}/version/{versionId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public VMessageEnvelope getMessageInJSON(@PathParam("userId") Integer userId, @PathParam("messageId") Integer id) {
+    public VMessageEnvelope getMessageInJSON(@PathParam("userId") Integer userId, @PathParam("messageId") Integer messageId, @PathParam("versionId") Integer versionId) {
 
         VMessage message = new VMessage( );
+        Message message1 = null;
+        if(versionId == -1) {
+            message1 = MessageAPI.getLatestUserMessage(userId, messageId);
+        } else {
+            message1 = MessageAPI.getMessage(userId, messageId, versionId);
+        }
 
-        Message message1 = MessageAPI.getMessageById(id);
-        Integer versionId = message1.getVersionId();
-        Integer messageId = message1.getMessageId();
         Integer prevMessageId = MessageAPI.getPrevUserMessageId(userId, messageId);
         Integer nextMessageId = MessageAPI.getNextUserMessageId(userId, messageId);
 
-        Integer prevVersionId = MessageAPI.getPrevUserVersionId(userId, messageId, versionId);
-        Integer nextVersionId = MessageAPI.getNextUserVersionId(userId, messageId, versionId);
+        Integer prevVersionId = MessageAPI.getPrevUserVersionId(userId, messageId, message1.getVersionId());
+        Integer nextVersionId = MessageAPI.getNextUserVersionId(userId, messageId, message1.getVersionId());
+
+        Integer lastVersionId = MessageAPI.getLastVersionId(userId, messageId);
 
 
         FileData fileData = GitService.getFileContent(messageId.toString(), ObjectId.fromString(message1.getObjectId()));
@@ -117,13 +122,14 @@ public class MessageListService {
 
         messageEnvelope.setNextVersionId(nextVersionId);
         messageEnvelope.setPreviousVersionId(prevVersionId);
+        messageEnvelope.setLastVersionId(lastVersionId);
 
         return messageEnvelope;
 
     }
 
     @GET
-    @Path("/all/user/{userId}/message/{messageId}/version/{versionId}")
+    @Path("/all/user/diff/{userId}/message/{messageId}/version/{versionId}")
     @Produces(MediaType.APPLICATION_JSON)
     public VMessageDiffResponse getMessageDiffInJSON(@PathParam("userId") Integer userId, @PathParam("messageId") Integer messageId, @PathParam("versionId") Integer versionId) {
         return getMessageDiff(userId, messageId, versionId);

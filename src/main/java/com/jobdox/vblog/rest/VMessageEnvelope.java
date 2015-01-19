@@ -25,12 +25,14 @@ public class VMessageEnvelope {
     private Integer nextMessageId;
     private Integer previousVersionId;
     private Integer nextVersionId;
+    private Integer lastVersionId;
     private String uuidOverride;
+
 
     public VMessageEnvelope() {
     }
 
-    public VMessageEnvelope(VMessage vmessage, Integer messageId, Integer userId, Integer previousMessageId, Integer nextMessageId, Integer previousVersionId, Integer nextVersionId, String uuidOverride) {
+    public VMessageEnvelope(VMessage vmessage, Integer messageId, Integer userId, Integer previousMessageId, Integer nextMessageId, Integer previousVersionId, Integer nextVersionId, Integer lastVersionId, String uuidOverride) {
         this.vmessage = vmessage;
         this.messageId = messageId;
         this.userId = userId;
@@ -38,6 +40,7 @@ public class VMessageEnvelope {
         this.nextMessageId = nextMessageId;
         this.previousVersionId = previousVersionId;
         this.nextVersionId = nextVersionId;
+        this.lastVersionId = lastVersionId;
         this.uuidOverride = uuidOverride;
     }
 
@@ -97,6 +100,14 @@ public class VMessageEnvelope {
         this.nextVersionId = nextVersionId;
     }
 
+    public Integer getLastVersionId() {
+        return lastVersionId;
+    }
+
+    public void setLastVersionId(Integer lastVersionId) {
+        this.lastVersionId = lastVersionId;
+    }
+
     public String getUuidOverride() {
         return uuidOverride;
     }
@@ -115,6 +126,7 @@ public class VMessageEnvelope {
                 ", nextMessageId=" + nextMessageId +
                 ", previousVersionId=" + previousVersionId +
                 ", nextVersionId=" + nextVersionId +
+                ", lastVersionId=" + lastVersionId +
                 ", uuidOverride=" + uuidOverride +
                 '}';
     }
