@@ -4,11 +4,16 @@ $(document).ready(function(){
     var allVars = $.getUrlVars();
 
     // Getting URL var by its nam
+    var userId = $.getUrlVar('userId');
+    userId = userId || 1;
     var messageId = $.getUrlVar('messageId');
     messageId = messageId || 1;
-    $("userId").val(1);
+    var versionId = $.getUrlVar('versionId');
+    versionId = versionId || -1;
+
+    $("userId").val(userId);
     $("messageId").val(messageId);
-    $("versionId").val(-1);
+    $("versionId").val(versionId);
     //var docId = $.url;
     //alert("hmmm!");
     $("#findOlder").click(function(event) {
@@ -103,9 +108,8 @@ $(document).ready(function(){
         });
     });
 
-    $.get("/rest/json/messagelist/all/user/1/message/" + messageId + "/version/" + "-1",function(data,status){
-                //alert('post complete' + data);
-                //Verify that there was no failure
+    ///all/diff/user/{userId}/message/{messageId}/version/{versionId}
+    $.get("/rest/json/messagelist/all/diff/user/" + userId + "/message/" + messageId + "/version/" + versionId,function(data,status){
                 if(data.success == false) {
                     alert(data.reason);
                     return;
