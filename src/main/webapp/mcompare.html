@@ -1,4 +1,12 @@
 <!doctype html>
+<!--
+  ~ Copyright (c) 2015. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -11,7 +19,9 @@
 		<script type="text/javascript" src="lib/difflib.js"></script>
 		<script src="lib/jquery.min.js"></script>
 		<script src="lib/v-common.js"></script>
-		<script src="lib/v-mdiff.js"></script>
+		<script src="lib/v-mcompare.js"></script>
+		<script src="lib/marked.js"></script>
+
 	</head>
 
 	<body>
@@ -42,14 +52,13 @@
 				</div>
 				-->
 				<div class="textInput">
-					<!-- <h2>Older</h2> -->
-					<input id="baseText" type="hidden" >
+					<h2><span id="pver">Previous Version</span></h2>
+					<div id="baseText">bbbb</div>
 				</div>
 				<div class="textInput spacer">
-					<!--<h2>Newer</h2> -->
-					<input id="newText" type="hidden" >
+					<h2><span id="cver">Current Version</span></h2>
+					<div id="newText">nnnnn</div>
 				</div>
-				<div id="diffoutput"> </div>
 			</form>
 
 

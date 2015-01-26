@@ -26,8 +26,15 @@
             var userId = $.getUrlVar('userId');
             var messageId = $.getUrlVar('messageId');
             var versionId = $.getUrlVar('versionId');
+
             var editLink = "editmessage.html?userId=" + userId + "&messageId=" + messageId;
             $('#editLink').attr("href", editLink);
+
+            var compareLink = "mcompare.html?userId=" + userId + "&messageId=" + messageId + "&versionId=" + versionId;
+            $('#compareLink').attr("href", compareLink);
+
+            var diffLink = "mdiff.html?userId=" + userId + "&messageId=" + messageId + "&versionId=" + versionId;
+            $('#diffLink').attr("href", diffLink);
 
             //var docId = $.url;
             //alert("DocId=" + docId);
@@ -98,7 +105,9 @@
     <div class="nav">
         <a href="messagelist.html">List Messages</a><br>
         <a href="editmessage.html">New Message</a><br>
-        <a id="editLink" href="editmessage.html?userId=1&messageId=14">Edit Message</a><br>
+        <a id="editLink" href="">Edit Message</a><br>
+        <a id="compareLink" href="">Compare</a><br>
+        <a id="diffLink" href="">Diff</a><br>
 
     </div>
 
